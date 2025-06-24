@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Planning System</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    @font-face {
+  font-family: 'MyFont';
+  src: url('/Users/sanjitroy/Documents/PlanningSystem/assets/Ubin.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+    /* Background image section */
+
+.background {
+    background: url("{{ url_for('static', filename='assets/rafale.jpg') }}") no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: -1;
+}
+
+
+    .overlay {
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.6); /* Adjust opacity here (0 = transparent, 1 = opaque) */
+      z-index: -1;
+    }
+
+    /* Header */
+    header {
+  position: relative;
+  background-color: #004080;
+  color: white;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  font-family: 'Ubin', sans-serif; 
+}
+
+.header-logo {
+  position: absolute;
+  top: -0.15em;
+  left: 1em;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 4px;
+  border: 2px solid white; /* optional: for cleaner edge */
+}
+
+
+.header-title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+    /* Center login container */
+    .login-container {
+      background-color: white;
+      max-width: 400px;
+      margin: auto;
+      padding: 70px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: fadeIn 0.6s ease;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #004080;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #005bb5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="background"></div>
+  <div class="overlay"></div>
+
+  <!-- Header -->
+  <header>
+    <img src="{{ url_for('static', filename='assets/DRDO.png') }}" alt="Logo" class="header-logo" />
+
+    <h1 class="header-title">PLANNING SYSTEM</h1>
+  </header>
+  
+  <!-- Login Form -->
+  <div class="login-container">
+    <h2>Login</h2>
+
+      {% if error %}
+        <div style="color: red; text-align: center; margin-bottom: 10px;">
+          {{ error }}
+        </div>
+      {% endif %}
+
+    <form method="POST" action="/login">
+      <input type="text" name="emp_id" placeholder="Employee ID" required />
+      <input type="password" id="password" name="name" placeholder="Full Name" required />
+      <label style="font-size: 15px;">
+        <input type="checkbox" onclick="togglePassword()"> Show Password
+      </label>
+      <script>
+        function togglePassword() {
+          const pwd = document.getElementById("password");
+          pwd.type = pwd.type === "password" ? "text" : "password";
+        }
+      </script>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+</body>
+</html>

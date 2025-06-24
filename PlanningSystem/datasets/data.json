@@ -1,0 +1,62 @@
+[
+  {
+    "emp_id": 1,
+    "name": "Amit Sharma",
+    "designation": "Scientist B",
+    "department": "Physics"
+  },
+  {
+    "emp_id": 2,
+    "name": "Neha Iyer",
+    "designation": "Scientist C",
+    "department": "Chemistry"
+  },
+  {
+    "emp_id": 3,
+    "name": "Rahul Mehta",
+    "designation": "Scientist D",
+    "department": "Biotechnology"
+  },
+  {
+    "emp_id": 4,
+    "name": "Sneha Reddy",
+    "designation": "Scientist E",
+    "department": "Mathematics"
+  },
+  {
+    "emp_id": 5,
+    "name": "Vikram Desai",
+    "designation": "Scientist F",
+    "department": "Computer Science"
+  },
+  {
+    "emp_id": 6,
+    "name": "Pooja Nair",
+    "designation": "Scientist B",
+    "department": "Environmental Science"
+  },
+  {
+    "emp_id": 7,
+    "name": "Rohan Verma",
+    "designation": "Scientist C",
+    "department": "AI Research"
+  },
+  {
+    "emp_id": 8,
+    "name": "Anjali Rao",
+    "designation": "Scientist D",
+    "department": "Data Science"
+  },
+  {
+    "emp_id": 9,
+    "name": "Karan Singh",
+    "designation": "Scientist E",
+    "department": "Mechanical Engineering"
+  },
+  {
+    "emp_id": 10,
+    "name": "Divya Joshi",
+    "designation": "Scientist F",
+    "department": "Electrical Engineering"
+  }
+]

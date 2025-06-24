@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile - Planning System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f4f4f4;
+      position: relative;
+      z-index: 1;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-image: url("{{ url_for('static', filename='assets/agni.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.30;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Header and Navbar from admin1.html */
+    .main-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: #1565c0;
+      border-bottom: 1px solid #eee;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      height: 70px;
+    }
+    .header-logo {
+  position: absolute;
+  top: -0.15em;
+  left: 1em;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 4px;
+  border: 2px solid white; /* optional: for cleaner edge */
+}
+
+    .logo {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white; /* Optional: adds a white ring */
+}
+    .system-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-align: center;
+      width: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    nav.navbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      background: #1565c0;
+      padding: 0.7rem 0;
+      box-sizing: border-box;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      z-index: 99;
+      border-bottom: 1px solid #eee;
+    }
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      margin-left: 2rem;
+      position: relative;
+    }
+    .notification-bell {
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      padding: 0;
+      margin-right: 2rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .notification-bell svg {
+      width: 28px;
+      height: 28px;
+      fill: #fff;
+    }
+    .notification-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: #e53935;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      font-weight: bold;
+    }
+    .notification-dropdown {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 40px;
+      min-width: 240px;
+      background: #fff;
+      color: #222;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      padding: 0.5rem 0;
+      z-index: 999;
+      font-size: 1rem;
+    }
+    .notification-dropdown.active {
+      display: block;
+    }
+    .notification-item {
+      padding: 0.7rem 1.2rem;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+    .notification-item:last-child {
+      border-bottom: none;
+    }
+    .notification-item:hover {
+      background: #f5f5f5;
+    }
+    .hamburger-menu {
+      position: relative;
+      display: inline-block;
+      margin-left: auto;
+      margin-right: 4rem;
+    }
+    .hamburger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+    }
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 4px;
+      background: #fff;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    .hamburger-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 45px;
+      background: #1976d2;
+      min-width: 160px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      z-index: 1000;
+      flex-direction: column;
+    }
+    .hamburger-dropdown a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .hamburger-dropdown a:hover {
+      background: #004d99;
+      color: #ffeb3b;
+    }
+    .hamburger-menu.active .hamburger-dropdown {
+      display: flex;
+    }
+
+    /* Profile Styles */
+    .page-content {
+      margin-top: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .profile-container {
+      width: 350px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .profile-photo {
+      width: 120px;
+      height: 120px;
+      background: #e0e0e0;
+      border-radius: 50%;
+      margin: 0 auto 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #888;
+      overflow: hidden;
+    }
+    .profile-name {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .profile-designation,
+    .profile-department {
+      font-size: 1em;
+      color: #555;
+      margin-bottom: 4px;
+    }
+    .profile-employee-id {
+  font-size: 1em;
+  color: #444;
+  margin-top: 6px;
+}
+.tickets-container {
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.tickets-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #1565c0;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.ticket {
+  padding: 15px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.ticket:last-child {
+  border-bottom: none;
+}
+
+.ticket-row {
+  margin: 6px 0;
+  font-size: 1rem;
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #0288d1;
+  display: inline-block;
+}
+
+.status.accepted {
+  background-color: #ffa000; /* amber */
+}
+
+.status.in-progress {
+  background-color: #0288d1; /* blue */
+}
+
+.status.completed {
+  background-color: #388e3c; /* green */
+}
+
+
+
+
+    @media (max-width: 700px) {
+      .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: 0.8rem 1rem;
+      }
+      .header-logo {
+        position: static;
+        margin-bottom: 0.5rem;
+      }
+      .system-title {
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+        text-align: center;
+      }
+      nav.navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding-left: 1rem;
+      }
+      .page-content {
+        margin-top: 170px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <div class="header-logo">
+      <img src="static/assets/DRDO.png" alt="Logo" class="logo" />
+    </div>
+    <span class="system-title">PLANNING SYSTEM</span>
+  </header>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <button class="notification-bell" id="notificationBell" aria-label="Show notifications">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C9.243 2 7 4.243 7 7v3.764C7 12.09 5.816 13.72 4.086 14.445A1 1 0 0 0 4 15v1c0 .553.447 1 1 1h14c.553 0 1-.447 1-1v-1a1 1 0 0 0-.086-.555C18.184 13.72 17 12.09 17 10.764V7c0-2.757-2.243-5-5-5zm0 20c1.104 0 2-.896 2-2H10c0 1.104.896 2 2 2z"/>
+        </svg>
+        <span class="notification-badge" id="notificationBadge">2</span>
+      </button>
+      <div class="notification-dropdown" id="notificationDropdown">
+        <div class="notification-item">System maintenance scheduled for tonight.</div>
+        <div class="notification-item">Your last ticket has been resolved.</div>
+      </div>
+    </div>
+    <div class="hamburger-menu">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="hamburger-dropdown" id="hamburgerDropdown">
+        <a href="{{ url_for('admin') }}">Home</a>
+        <a href="#">Contact</a>
+        <a href="#">Profile</a>
+        <a href="{{ url_for('login') }}">Logout</a>
+      </div>
+    </div>
+  </nav>
+  <div class="page-content">
+    <div class="profile-container">
+        <div class="profile-photo">
+          <!-- Replace with image: <img src="profile.jpg" alt="User Photo" style="width:100%;height:100%;object-fit:cover;"> -->
+          Photo
+        </div>
+        <div class="tickets-container">
+          <h2>Your Raised Tickets</h2>
+          {% if tickets %}
+            {% for t in tickets %}
+              <div class="ticket">
+                <div class="ticket-row"><strong>Timestamp:</strong> {{ t.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                <div class="ticket-row"><strong>Category:</strong> {{ t.category }}</div>
+                <div class="ticket-row"><strong>Description:</strong> {{ t.description }}</div>
+                <div class="ticket-row">
+                  <strong>Status:</strong>
+                  <span class="status {{ t.status | lower | replace(' ', '-') }}">{{ t.status }}</span>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>No tickets submitted yet.</p>
+          {% endif %}
+        </div>
+
+    </div>
+       
+  <script>
+    // Notification dropdown logic
+    const bell = document.getElementById('notificationBell');
+    const dropdown = document.getElementById('notificationDropdown');
+    document.addEventListener('click', function(e) {
+      if (bell.contains(e.target)) {
+        dropdown.classList.toggle('active');
+        bell.classList.toggle('active');
+      } else {
+        dropdown.classList.remove('active');
+        bell.classList.remove('active');
+      }
+    });
+    // Hamburger toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerMenu = hamburgerBtn.parentElement;
+    hamburgerBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      hamburgerMenu.classList.toggle('active');
+      hamburgerBtn.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!hamburgerMenu.contains(e.target)) {
+        hamburgerMenu.classList.remove('active');
+        hamburgerBtn.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
